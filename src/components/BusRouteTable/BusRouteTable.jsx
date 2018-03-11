@@ -5,8 +5,28 @@ import { Table } from 'antd';
 const columns = [
   {
     title: '路線編號',
-    dataIndex: 'Id',
-    key: 'Id',
+    dataIndex: 'nameZh',
+    key: 'nameZh',
+  },
+  {
+    title: '營運業者',
+    dataIndex: 'providerName',
+    key: 'providerName',
+  },
+  {
+    title: '距離',
+    dataIndex: 'distance',
+    key: 'distance',
+  },
+  {
+    title: '去程(起點)第一站',
+    dataIndex: 'departureZh',
+    key: 'departureZh',
+  },
+  {
+    title: '回程(訖點)第一站',
+    dataIndex: 'destinationZh',
+    key: 'destinationZh',
   }
 ];
 
@@ -15,7 +35,7 @@ class BusRouteTable extends Component {
     this.props.loadDataAsync();
   }
   render() {
-    // console.log(this.props.busRoute.busRoutes)
+    console.log(this.props.busRoute.busRoutes[0])
     // console.log(this.props.busRoute.busRoutes.filter(x => x.pathAttributeId === 11011))
     return (
       <div>
