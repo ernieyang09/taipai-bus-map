@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
+import { Provider, connect } from 'react-redux'
+import { init } from '@rematch/core';
+
 import { gzipHelper } from './helper';
+import * as models from './models';
+
+const store = init({
+  models,
+});
 
 class App extends Component {
   componentDidMount() {
-    fetch('https://tcgbusfs.blob.core.windows.net/blobbus/GetRoute.gz').then(async res => {
-      const buffer =await res.arrayBuffer();
-      const data = JSON.parse(gzipHelper(buffer));
-      console.log(data)
-    })
+
   }
   render() {
     return (
-      <div>
-        asdgjasdjgkl
-      </div>
+      <Provider store={store}>
+        <div>
+          asdgjasdjgkl
+        </div>
+       </Provider>
     );
   }
 }
