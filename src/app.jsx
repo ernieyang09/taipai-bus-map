@@ -11,9 +11,6 @@ const store = init({
 });
 
 class App extends Component {
-  componentDidMount() {
-
-  }
   render() {
     return (
       <Provider store={store}>
