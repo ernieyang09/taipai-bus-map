@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  devtool: 'inline-source-map',
   entry: {
     index: ["babel-polyfill", './src/index.jsx']
   },
@@ -26,6 +27,10 @@ module.exports = {
             loader: "sass-loader" // compiles Sass to CSS
         }]
       },
+      {
+         test: /\.css$/,
+         use: [ 'style-loader', 'css-loader' ]
+       },
       {
         test: /\.html$/i,
         include: path.resolve(__dirname, 'src'),
