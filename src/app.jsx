@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Provider, connect } from 'react-redux'
 import { init } from '@rematch/core';
 
-import { gzipHelper } from './helper';
 import * as models from './models';
+
+import { BusRouteTable } from './components';
 
 const store = init({
   models,
@@ -16,9 +17,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <div>
-          asdgjasdjgkl
-        </div>
+        <BusRouteTable />
        </Provider>
     );
   }
