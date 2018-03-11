@@ -96,16 +96,32 @@ class BusRouteTable extends Component {
     const { searchDeparture, searchDestination } = this.state;
     const regDeparture = new RegExp(searchDeparture, 'gi');
     const regDestination = new RegExp(searchDestination, 'gi');
+
     const filterData = this.props.busRoute.busRoutes.map((record) => {
       const match1 = record.departureZh.match(regDeparture);
       const match2 = record.destinationZh.match(regDestination);
       if (match1 && match2) {
-        return record;
+        return {
+          ...record,
+          departureZh: (
+            <span>
+              {record.departureZh.split(regDeparture).map((text, i) => (
+                i > 0 ? [<span key={i} className="highlight">{match1[0]}</span>, text] : text
+              ))}
+            </span>
+          ),
+          destinationZh: (
+            <span>
+              {record.destinationZh.split(regDestination).map((text, i) => (
+                i > 0 ? [<span key={i} className="highlight">{match2[0]}</span>, text] : text
+              ))}
+            </span>
+          ),
+        };
       } else {
         return null;
       }
     }).filter(record => record);
-    console.log(filterData)
     this.setState({
       routes: filterData,
     });
@@ -120,8 +136,6 @@ class BusRouteTable extends Component {
   )
 
   render() {
-    console.log(this.state)
-    // console.log(this.props.busRoute.busRoutes.filter(x => x.pathAttributeId === 11011))
     return (
       <div>
         <Table
