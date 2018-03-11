@@ -1,7 +1,9 @@
 import React , { Component } from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
-import { Table } from 'antd';
+import { Table, Input, Button } from 'antd';
+
+import './main.scss';
 
 function columns() {
   return [
@@ -33,18 +35,80 @@ function columns() {
     dataIndex: 'departureZh',
     key: 'departureZh',
     width: 200,
+    filterDropdown: (
+      <div className="custom-filter-dropdown">
+        <Input
+          ref={ele => this.searchDeparture = ele}
+          placeholder="關鍵字"
+          value={this.state.searchDeparture}
+          onChange={this.handleForChange('Departure')}
+          onPressEnter={this.onSearch}
+        />
+        <Button type="primary" onClick={this.onSearch}>Search</Button>
+      </div>
+    )
   },
   {
     title: '回程(訖點)第一站',
     dataIndex: 'destinationZh',
     key: 'destinationZh',
     width: 200,
+    filterDropdown: (
+      <div className="custom-filter-dropdown">
+        <Input
+          ref={ele => this.searchDestination = ele}
+          placeholder="關鍵字"
+          value={this.state.searchDestination}
+          onChange={this.handleForChange('Destination')}
+          onPressEnter={this.onSearch}
+        />
+        <Button type="primary" onClick={this.onSearch}>Search</Button>
+      </div>
+    )
   }];
 }
 
 class BusRouteTable extends Component {
+  state = {
+    searchDeparture: '',
+    searchDestination: '',
+    routes: [],
+  }
   componentDidMount() {
     this.props.loadDataAsync();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.busRoute.busRoutes.length) {
+      this.setState({
+        routes: nextProps.busRoute.busRoutes,
+      });
+    }
+  }
+
+  handleForChange = propertyName => event => {
+    this.setState({
+      [`search${propertyName}`]: event.target.value,
+    });
+  }
+
+  onSearch = () => {
+    const { searchDeparture, searchDestination } = this.state;
+    const regDeparture = new RegExp(searchDeparture, 'gi');
+    const regDestination = new RegExp(searchDestination, 'gi');
+    const filterData = this.props.busRoute.busRoutes.map((record) => {
+      const match1 = record.departureZh.match(regDeparture);
+      const match2 = record.destinationZh.match(regDestination);
+      if (match1 && match2) {
+        return record;
+      } else {
+        return null;
+      }
+    }).filter(record => record);
+    console.log(filterData)
+    this.setState({
+      routes: filterData,
+    });
   }
 
   getProviderName = () => (
@@ -52,18 +116,17 @@ class BusRouteTable extends Component {
       R.map(d => d.providerName),
       R.uniq,
       R.map(d => ({ text: d, value: d }))
-    )(this.props.busRoute.busRoutes)
+    )(this.state.routes)
   )
 
   render() {
-    console.log(this.props.busRoute.busRoutes[3])
-    console.log(this.props.busRoute.busRoutes[4])
+    console.log(this.state)
     // console.log(this.props.busRoute.busRoutes.filter(x => x.pathAttributeId === 11011))
     return (
       <div>
         <Table
           columns={columns.call(this)}
-          dataSource={this.props.busRoute.busRoutes}
+          dataSource={this.state.routes}
           rowKey={record => `${record.providerId}-${record.pathAttributeId}` }
         />
       </div>
