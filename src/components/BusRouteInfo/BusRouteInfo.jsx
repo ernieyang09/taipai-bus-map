@@ -5,6 +5,7 @@ import {
   Row,
   Col,
   Modal,
+  Button,
 } from 'antd';
 
 import './main.scss';
@@ -12,14 +13,13 @@ import './main.scss';
 class BusRouteInfo extends Component {
   render() {
     const { current } = this.props.busRouteInfo;
-    console.log(current)
     return (
       <Modal
          className="info-modal"
          title="基本資料"
          visible={!R.isEmpty(this.props.busRouteInfo.current)}
          footer={null}
-         onCancel={()=> { this.props.setActive({}); }}
+         onCancel={()=> { this.props.init(); }}
          width='80%'
        >
          {
@@ -117,6 +117,29 @@ class BusRouteInfo extends Component {
                  {current.headwayDesc}
                </Col>
              </Row>
+             <div>
+               <div>
+                 <Button onClick={this.props.loadRealtimeAsync}>
+                   即時資料
+                 </Button>
+               </div>
+               <div>
+                 {
+                   this.props.busRouteInfo.realtime &&
+                   <React.Fragment>
+                     {
+                       this.props.busRouteInfo.realtime.length ?
+                         this.props.busRouteInfo.realtime.map((d)=> {
+                           return <div key={d.BusID}>
+                             公車車牌: {d.BusID} 經度: {d.Longitude} 緯度: {d.Latitude}
+                           </div>
+                         })
+                       : '無資料'
+                     }
+                   </React.Fragment>
+                 }
+               </div>
+             </div>
            </React.Fragment>
          }
        </Modal>
@@ -129,10 +152,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = ({
-  busRouteInfo: { setActive },
+  busRouteInfo: { init, loadRealtimeAsync },
 }) => {
   return {
-    setActive,
+    init,
+    loadRealtimeAsync,
   };
 }
 
