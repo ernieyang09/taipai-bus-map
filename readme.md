@@ -1,6 +1,14 @@
 # taipei-bus-map
 
-get the bus info at open data taipei.
+Get the bus info at open data taipei.
+
+## Stack
+
+- react
+- redux
+- rematch
+- antd
+- ramda
 
 ## Todo
 
