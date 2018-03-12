@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server  --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "deploy": "gh-pages -d dist -b master"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.10",
+    "gh-pages": "^1.1.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.0.6",
     "node-sass": "^4.7.2",
