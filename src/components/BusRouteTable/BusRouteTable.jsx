@@ -142,6 +142,9 @@ class BusRouteTable extends Component {
           columns={columns.call(this)}
           dataSource={this.state.routes}
           rowKey={record => `${record.providerId}-${record.pathAttributeId}` }
+          onRow={(record)=> ({
+            onClick: () => { this.props.setActive(record); }
+          })}
         />
       </div>
     )
@@ -153,10 +156,14 @@ const mapStateToProps = (state) => ({
   busRoute: state.busRoute,
 });
 
-const mapDispatchToProps = ({ busRoute:  { loadData, loadDataAsync } }) => {
+const mapDispatchToProps = ({
+  busRoute:  { loadData, loadDataAsync },
+  busRouteInfo: { setActive },
+}) => {
   return {
     loadData,
     loadDataAsync,
+    setActive,
   };
 }
 

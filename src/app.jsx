@@ -4,7 +4,10 @@ import { init } from '@rematch/core';
 
 import * as models from './models';
 
-import { BusRouteTable } from './components';
+import {
+  BusRouteTable,
+  BusRouteInfo,
+} from './components';
 
 const store = init({
   models,
@@ -14,7 +17,10 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <BusRouteTable />
+        <React.Fragment>
+          <BusRouteTable />
+          <BusRouteInfo />
+        </React.Fragment>
        </Provider>
     );
   }
